@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        jdk 'JDK'        // Your Jenkins JDK name
-        maven 'MAVEN'    // Your Jenkins Maven name
+        jdk 'JDK'        // Replace with your Jenkins JDK tool name
+        maven 'MAVEN'    // Replace with your Jenkins Maven tool name
     }
 
     environment {
@@ -20,33 +20,11 @@ pipeline {
             }
         }
 
-        stage('Stop Tomcat') {
-            steps {
-                echo "Stopping Tomcat..."
-                bat """
-                    set CATALINA_HOME=${TOMCAT_HOME}
-                    "${TOMCAT_HOME}\\bin\\shutdown.bat"
-                """
-                echo "Waiting 5 seconds..."
-                bat "ping 127.0.0.1 -n 6 > nul"  // Use ping instead of timeout
-            }
-        }
-
         stage('Deploy WAR') {
             steps {
-                echo "Deploying WAR..."
+                echo "Deploying WAR to Tomcat..."
                 bat """
                     copy /Y target\\${WAR_NAME} ${TOMCAT_HOME}\\webapps\\
-                """
-            }
-        }
-
-        stage('Start Tomcat') {
-            steps {
-                echo "Starting Tomcat..."
-                bat """
-                    set CATALINA_HOME=${TOMCAT_HOME}
-                    "${TOMCAT_HOME}\\bin\\startup.bat"
                 """
             }
         }
