@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        jdk 'JDK'        // Replace with your Jenkins JDK tool name
-        maven 'MAVEN'    // Replace with your Jenkins Maven tool name
+        jdk 'JDK'        // Your Jenkins JDK name
+        maven 'MAVEN'    // Your Jenkins Maven name
     }
 
     environment {
@@ -28,7 +28,7 @@ pipeline {
                     "${TOMCAT_HOME}\\bin\\shutdown.bat"
                 """
                 echo "Waiting 5 seconds..."
-                bat "timeout /t 5 /nobreak"
+                bat "ping 127.0.0.1 -n 6 > nul"  // Use ping instead of timeout
             }
         }
 
